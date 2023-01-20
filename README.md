@@ -6,9 +6,11 @@
 $ sudo virsh list
 ```
 # start/stop/shutdown VM
+```sh
 $ sudo start testvm
 $ sudo reset testvm
 $ sudo destroy testvm_id
+```
 
 # get dhcp IPs
 ```sh
