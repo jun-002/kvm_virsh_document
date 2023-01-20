@@ -5,6 +5,11 @@
 ```sh
 $ sudo virsh list
 ```
+# start/stop/shutdown VM
+$ sudo start testvm
+$ sudo reset testvm
+$ sudo destroy testvm_id
+
 # get dhcp IPs
 ```sh
 $ sudo virsh net-dhcp-leases default
