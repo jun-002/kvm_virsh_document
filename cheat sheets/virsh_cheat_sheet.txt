@@ -1,0 +1,67 @@
+#VIRSH cheating sheet
+
+virsh list
+sudo virsh list
+sudo virsh list --all
+sudo virsh dominfo testvm
+
+sudo virsh start testvm
+sudo virsh destroy testvm
+
+sudo virsh edit testvm
+
+# console login
+sudo virsh console testvm --safe
+
+# ssh login 
+ssh lfk1222@10.8.34.148
+
+# 3 WAYS to find vm ip address
+1).
+$ sudo virsh net-list
+ Name                 State      Autostart     Persistent
+----------------------------------------------------------
+ default              active     yes           yes
+
+$ sudo virsh net-info default
+Name:           default
+UUID:           70db9189-9940-4f5a-b711-120f9dfd134b
+Active:         yes
+Persistent:     yes
+Autostart:      yes
+Bridge:         virbr0
+
+$ sudo virsh net-dhcp-leases default
+ Expiry Time          MAC address        Protocol  IP address                Hostname        Client ID or DUID
+-------------------------------------------------------------------------------------------------------------------
+
+2).
+$ sudo virsh list
+ Id    Name                           State
+----------------------------------------------------
+ 36    ljl639a2                       running
+ 37    ljl637a2                       running
+ 77    lii279a1-testvm                running
+
+$ sudo virsh domifaddr lii279a1-testvm
+ Name       MAC address          Protocol     Address
+-------------------------------------------------------------------------------
+
+3).
+$ sudo virsh dumpxml lii279a1-testvm | grep "mac address"
+      <mac address='52:54:00:d6:95:9e'/>
+$ sudo virsh dumpxml lii279a1-testvm | grep "mac address" | awk -F\' '{ print $2 }'
+52:54:00:d6:95:9e
+$ arp -an | grep 52:54:00:d6:95:9e
+? (10.8.34.148) at 52:54:00:d6:95:9e [ether] on br639
+
+# get vm specification file
+$ sudo virsh dumpxml lii279a1-testvm | tee lii279a1-testvm.no_boot.xml
+$ sudo diff lii279a1-testvm.no_boot.xml /etc/libvirt/qemu/lii279a1-testvm.xml
+
+# vm clone
+sudo virt-clone --original lii279a1-testvm --name lii279a1-testvm-clone --auto-clone
+
+# extra points
+ls -l /tmp/rhel-server-7.9-x86_64-dvd.iso
+xauth add $(xauth -f ~lfk1222/.Xauthority list | tail -1)

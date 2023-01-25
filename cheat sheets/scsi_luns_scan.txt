@@ -1,0 +1,29 @@
+1. Rescan SCSI hosts:
+
+# for host in 'ls /sys/class/scsi_host'
+do 
+	echo ${host}; echo "- - -" > /sys/class/scsi_host/${host}/scan
+done
+
+2. Issue LIP to FC hosts:
+# for host in 'ls /sys/class/fc_host'
+do 
+	echo ${host}; echo "1" > /sys/class/fc_host/${host}/issue_lip;
+done
+
+3. Run rescan script from sg3_utils:
+# rescan-scsi-bus.sh
+
+# rescan-scsi-bus.sh -i
+
+Reload/Refresh Multipathd deamon
+After above scan, the new assigned LUNs are visible in Linux OS level, but still multipathd daemon will show no mappings for new LUNs. You will have to refresh multipathd daemon to map the new LUNs.
+
+Run the below command:
+
+# multipath -v2
+
+Verify
+Verify with “multipath -ll“” that the LUNs are visible now.
+
+# multipath -ll
