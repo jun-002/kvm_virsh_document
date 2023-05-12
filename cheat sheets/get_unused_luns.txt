@@ -1,0 +1,12 @@
+
+
+for h in `sudo virsh list --all --name`;do echo $h; sudo virsh dumpxml $h | grep source | grep dev= | awk -F\' '{print "         " $2}'; done
+for h in `sudo virsh list --name --all`; do grep $h /etc/hostlist.pgds.us; done | awk -F: '{ print $1, $5 }'
+
+for l in `ls /dev/mapper/`; do echo $l; done | sort | tee mapper_all.lst
+# for h in `sudo virsh list --all --name`;do sudo virsh dumpxml $h | grep source | grep dev= | awk -F\' '{print $2}'; done | sort | tee vm_luns.lst
+for h in `sudo virsh list --all --name`;do sudo virsh dumpxml $h | grep source | grep dev= | awk -F\' '{print $2}'; done | awk -F\/ '{ print $4}' | sort | tee vm_luns.lst
+diff mapper_all.lst vm_luns.lst | grep "<" | awk '{ print $2 }' | sort | tee unused_lun.lst
+sudo multipath -ll | grep ^[0-9] | awk '{ print $1 }' | sort | uniq | tee multipath.out
+sudo multipath -ll | grep ^[0-9] | awk '{ print $1, $2 }' | sort | uniq | tee multipath_dm.out
+diff multipath.out vm_luns.lst  | grep "^<" | awk '{ print $2 }'

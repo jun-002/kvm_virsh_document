@@ -1,0 +1,44 @@
+cat /etc/kubernetes/admin.conf  | grep client-certificate-data | awk '{​​​​​print $2}​​​​​' | base64 --decode | openssl x509 -text -noout
+
+kubectl get nodes
+kubectl describe node ud01v0829k8s101
+kubectl get nodes
+systemctl status kubelet
+systemctl restart kubelet
+systemctl status kubelet
+
+kubectl get nodes
+kubectl get ns
+kubectl get pods -n cattle-system
+kubectl get pods
+kubectl get events
+kubectl get nodes
+kubectl get nodes -n cattle-system
+kubectl get events -n cattle-system
+kubectl get pods -n cattle-system -o wide
+
+dmesg
+sar 1 3
+
+kubectl get pods -n cattle-system
+kubectl describe pod v245-rancher-5597bdc4c8-gql4x -n cattle-system
+kubectl get nodes
+kubectl top nodes
+watch kubectl top nodes
+watch kubectl top pods
+watch kubectl top pods -n cattle-system
+
+kubectl get pods -n cattle-system
+kubectl get deployment -n cattle-system
+kubectl get deployment -n cattle-system -o wide
+docker ps
+docker ps  | grep etcd
+
+kubectl get pods -n cattle-system
+kubectl logs -f v245-rancher-5597bdc4c8-gql4x -n cattle-system
+kubectl get pods -n cattle-system -o wide
+kubectl logs -f v245-rancher-5597bdc4c8-w2zrt -n cattle-system
+
+kubectl exec -it cattle-cluster-agent-cc5bdfb49-vgdhz -n cattle-system sh
+kubectl exec -it cattle-cluster-agent-cc5bdfb49-vgdhz -n cattle-system /bin/bash
+
